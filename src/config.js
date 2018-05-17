@@ -10,6 +10,9 @@ const requireProcessEnv = (name) => {
   return process.env[name]
 }
 
+const dbuser = requireProcessEnv('DB_USER')
+const dbpassword = requireProcessEnv('DB_PASSWORD')
+
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv-safe')
@@ -54,7 +57,7 @@ const config = {
     ip: process.env.IP || undefined,
     port: process.env.PORT || 8080,
     mongo: {
-      uri: process.env.MONGODB_URI || 'mongodb://localhost/sensores-api'
+      uri: process.env.MONGODB_URI || `mongodb://${dbuser}:${dbpassword}@ds127490.mlab.com:27490/sensores`
     }
   }
 }
