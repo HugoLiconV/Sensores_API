@@ -10,9 +10,6 @@ const requireProcessEnv = (name) => {
   return process.env[name]
 }
 
-const dbuser = requireProcessEnv('DB_USER')
-const dbpassword = requireProcessEnv('DB_PASSWORD')
-
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv-safe')
@@ -21,6 +18,9 @@ if (process.env.NODE_ENV !== 'production') {
     sample: path.join(__dirname, '../.env.example')
   })
 }
+
+const dbuser = requireProcessEnv('DB_USER')
+const dbpassword = requireProcessEnv('DB_PASSWORD')
 
 const config = {
   all: {

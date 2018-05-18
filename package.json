@@ -53,6 +53,8 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "lodash": "^4.13.1",
+    "moment": "2.22.1",
+    "moment-timezone": "0.5.16",
     "mongoose": "^4.4.19",
     "mongoose-create-unique": "^0.4.1",
     "mongoose-keywords": "^0.3.1",

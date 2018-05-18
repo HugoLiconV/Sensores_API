@@ -1,4 +1,10 @@
 import mongoose, { Schema } from 'mongoose'
+let moment = require('moment')
+moment().format()
+
+let timezone = require('moment-timezone')
+timezone().tz('America/Chihuahua').format()
+
 // temperature, humidity, pressure, light
 const registroSchema = new Schema({
   measuring: {
@@ -24,10 +30,13 @@ const registroSchema = new Schema({
       trim: true
     }
   },
+  hour: {
+    type: Date,
+    default: Date.now()
+  },
   date: {
     type: Date,
-    default: Date.now(),
-    required: true
+    default: Date.now()
   },
   location: {
     type: Object,
@@ -46,8 +55,11 @@ const registroSchema = new Schema({
 
 registroSchema.pre('save', function (next) {
   this.timestamp = Date.now()
-  this.hora = Date.now()
-  this.fecha = Date.now()
+  this.hour = Date.now()
+  this.date = Date.now()
+  let _timezone = timezone.tz(this.hour, 'America/Chihuahua').format()
+  this.hour = _timezone
+  this.date = _timezone
   next()
 })
 
@@ -57,7 +69,8 @@ registroSchema.methods = {
       // simple view
       id: this.id,
       measuring: this.measuring,
-      date: this.date,
+      hour: formatHour(this.hour),
+      date: formatDate(this.date),
       location: this.location,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
@@ -65,6 +78,16 @@ registroSchema.methods = {
 
     return view
   }
+}
+
+function formatHour (date) {
+  const hour = moment(new Date(date).toUTCString())
+  return hour.format('h:mm:ss a')
+}
+
+function formatDate (date) {
+  const _date = moment(new Date(date).toUTCString())
+  return _date.format('D MMMM YYYY')
 }
 
 const model = mongoose.model('Registro', registroSchema)
